@@ -74,6 +74,37 @@ const ball = {
     directionX: 1,
     directionY: 1,
     _calcPosition: function () {
+        // Verifica se o jogador 1 fez um ponto (x > largura do campo)
+        if (this.x > field.width - this.radius - rightPaddle.w - gapX) {
+            //Verifica se a raquete direita está na posição y da bola
+            if (
+                this.y + this.radius > rightPaddle.y &&
+                this.y - this.radius < rightPaddle.y + rightPaddle.h
+            ) {
+                // Rebate a bola invertendo o sinal de X
+                this._reverseX();
+            } else {
+                // Pontuar o jogador 1
+                score.increaseHuman();
+                this._pointUp();
+            }
+        }
+        // Verifica se o jogador 2 fez um ponto (x < 0)
+        if (this.x < this.radius + leftPaddle.w + gapX) {
+            // Verifica se a raquete esquerda está na posição Y da bola
+            if (
+                this.y + this.radius > leftPaddle.y &&
+                this.y - this.radius < leftPaddle.y + leftPaddle.h
+            ) {
+                // Rebate a bola invertendo o sinal de X
+                this._reverseX();
+            } else {
+                // Pontuar o jogador 2
+                score.increaseComputer();
+                this._pointUp();
+            }
+        }
+        // Verifica as laterais superior e inferior do campo
         if (
             (this.y - this.radius < 0 && this.directionY < 0) ||
             (this.y > field.height - this.radius && this.directionY > 0)
@@ -90,6 +121,10 @@ const ball = {
     _move: function () {
         this.x += this.directionX * this.speed;
         this.y += this.directionY * this.speed;
+    },
+    _pointUp: function () {
+        this.x = field.width / 2;
+        this.y = field.height / 2;
     },
     draw: function () {
         // desenha a bolinha
@@ -111,8 +146,14 @@ const ball = {
 };
 
 const score = {
-    human: 1,
-    computer: 2,
+    human: 0,
+    computer: 0,
+    increaseHuman: function () {
+        this.human++;
+    },
+    increaseComputer: function () {
+        this.computer++;
+    },
     draw: function () {
         // desenhar o placar
         canvasCtx.font = "bold 72px Arial";
@@ -161,11 +202,9 @@ const main = () => {
 
 setup();
 main();
-window.setInterval(draw, 1000 / 60);
+//window.setInterval(draw, 1000 / 60);
 
 canvasEl.addEventListener("mousemove", (e) => {
     mouse.x = e.pageX;
     mouse.y = e.pageY;
-
-    console.log(mouse);
 });
