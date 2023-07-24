@@ -5,3 +5,7 @@ Este é um clone do clássico jogo Pong, desenvolvido em JavaScript e HTML5 Canv
 ## Como jogar
 
 Para jogar, basta abrir o arquivo index.html em um navegador da web. O jogo será carregado. Utilize o cursor do mouse para movimentar a raquete esquerda.
+
+## Jogue agora
+
+[Clique Aqui](https://wolflanfreitas.github.io/ping-pong/)
